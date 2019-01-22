@@ -166,5 +166,17 @@ class CheckListsController extends Controller
         $project = $project->name;
         return view('admin.check_list.admin_details',compact('details','project','total'));
     }
+    public function number_of_hours($checkInDate){
+        $_check_in     = new Carbon("$checkInDate");
+        $_check_out    = new Carbon(Carbon::now());
+        $_years        = $_check_in->diff($_check_out)->format('%Y');
+        $_months       = $_check_in->diff($_check_out)->format('%M');
+        $_days         = $_check_in->diff($_check_out)->format('%D');
+        $_hours        = $_check_in->diff($_check_out)->format('%H');
+        $_mintues      = $_check_in->diff($_check_out)->format('%I');
+        $_seconds      = $_check_in->diff($_check_out)->format('%S');
+        $total         = $_years*365*24 + $_months*30*24 + $_days*24+$_hours+($_mintues/60);
+        return $total;
+    }
     
 }

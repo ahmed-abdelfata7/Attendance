@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'HomeController@login')->name('login');
+
 Route::get('/logout', 'HomeController@logout')->name('logout');
 Route::post('/check_login', 'HomeController@check_login');
 Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
@@ -31,5 +32,6 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
     Route::get('engineer_report_details/{id}/{engineer_id}','Admin\CheckListsController@engineer_report_details');
     Route::get('admin_report_details/{id}','Admin\CheckListsController@admin_report_details');
     Route::get('engineer_reports','Admin\EngineerReportsController@engineer_reports');
+
 });
 
