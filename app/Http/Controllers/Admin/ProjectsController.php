@@ -60,7 +60,7 @@ class ProjectsController extends Controller
             $save['name']                  = $project['name'];
             $save['so_number']             = $project['so_number'];
             $save['customer_id']           = $project['customer_id'];
-            $save['hours_number']          = $project['hours_number'].":00:00";
+            $save['hours_number']          = $project['hours_number'];
             $save['project_start']         = $project['project_start'];
             $save['project_end']           = $project['project_end'];
             $save['created_at']            = Carbon::now();
