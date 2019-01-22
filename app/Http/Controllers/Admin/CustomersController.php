@@ -103,9 +103,8 @@ class CustomersController extends Controller
             $save['name']                  = $profile['name'];
             $save['email']                 = $profile['email'];
             $save['phone']                 = $profile['phone'];
-            $save['address']                 = $profile['address'];
+            $save['address']               = $profile['address'];
             $save['updated_at']            = Carbon::now();
-            
             DB::table('customers')->where('id',$id)->update($save);
             return redirect()->back()->with('update','update');
         }
@@ -124,5 +123,8 @@ class CustomersController extends Controller
         DB::table('customers')->where('id',$id)->delete();
         return redirect()->back()->with('delete','delete');
     
+    }
+    public function CustomerDetails($customerId){
+        return view('admin.customers.CustomerDetails');
     }
 }

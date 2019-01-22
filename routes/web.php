@@ -32,6 +32,9 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
     Route::get('engineer_report_details/{id}/{engineer_id}','Admin\CheckListsController@engineer_report_details');
     Route::get('admin_report_details/{id}','Admin\CheckListsController@admin_report_details');
     Route::get('engineer_reports','Admin\EngineerReportsController@engineer_reports');
+    Route::get('CustomerDetails/{id}','Admin\CustomersController@CustomerDetails');
+    Route::get('admin_check_out/{id}','Admin\CheckListsController@admin_check_out');
+    Route::post('do_admin_check_out','Admin\CheckListsController@do_admin_check_out');
 
 });
 

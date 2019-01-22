@@ -20,6 +20,8 @@ class CreateCheckListsTable extends Migration
             $table->string('check_in')->nullable();
             $table->string('check_out')->nullable();
             $table->text("report")->nullable();
+            $table->boolean("alert")->default(0);
+            $table->string("editBy")->default(0);
             $table->timestamps();
         });
     }

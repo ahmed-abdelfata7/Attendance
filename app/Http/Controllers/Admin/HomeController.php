@@ -16,15 +16,23 @@ class HomeController extends Controller
     }
 
     public function systemDashboard(){
-        $user = Auth::user();
-        $projects=DB::table('projects')
-                ->get();
+        $user     = Auth::user();
+        $projects = DB::table('projects')
+                    ->get();
+        
+        $alerts   = DB::table('check_lists')
+                    ->select('check_lists.id','check_lists.check_in','projects.name','users.name AS userName')
+                      ->join('projects','projects.id','=','check_lists.project_id')
+                      ->join('users','users.id','check_lists.engineer_id')
+                      ->where('alert','=', 1)
+                      ->get();
+
         switch($user->role){
             case "developer":
-                return view("admin.developerDashboard",compact('projects'));
+                return view("admin.developerDashboard",compact('projects','alerts'));
             break;
             case "admin":
-                return view("admin.adminDashboard",compact('projects'));
+                return view("admin.adminDashboard",compact('projects','alerts'));
             break;
             default:
                 $user = Auth::user();
@@ -36,6 +44,7 @@ class HomeController extends Controller
                             ['engineer_id','=',$user->id]
                             ])
                         ->get();
+                
                 return view("admin.engineerDashboard",compact('projects','pending'));
             break;
         }

@@ -47,7 +47,11 @@
                   <tr>
                     <td>{{$row->name}}</td>
                     <td>{{$row->hours_number}}</td>
-                    <td><span class="label label-success">{{$row->taken_hours}}</span></td>
+                    @if($row->taken_hours < $row->hours_number)
+                    <td style="background-color:lightgray;"><b>{{$row->taken_hours}}</b></td>
+                    @else
+                    <td  style="background-color:red;"><b>{{$row->taken_hours}}</b></td>
+                    @endif
                     <td>
                     <a href='{{url("admin/admin_report_details/$row->id")}}' class="btn btn-primary btn-icon"><span class="fa fa-list"></span></a>
                     </td>
@@ -80,25 +84,19 @@
             <!-- /.box-header -->
             <div class="box-body">
               <ul class="products-list product-list-in-box">
-                <!-- <li class="item">
-                  <div class="product-img">
-                    <img src="dist/img/default-50x50.gif" alt="Product Image">
-                  </div>
+              @foreach($alerts as $row)
+                <li class="item">
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Xbox One <span
-                        class="label label-danger pull-right">$350</span></a>
-                    <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
-                        </span>
+                    <a href='{{url("admin/admin_check_out/$row->id")}}' class="btn btn-primary">Click to check-Out </a>
+                    <p>
+                         {{$row->userName}} has been Check-in {{$row->check_in}} in {{$row->name}} without Check Out.
+                    </p>
                   </div>
-                </li> -->
+                </li> 
+              @endforeach
               </ul>
             </div>
             <!-- /.box-body -->
-            <div class="box-footer text-center">
-              <a href="javascript:void(0)" class="uppercase">View All Products</a>
-            </div>
-            <!-- /.box-footer -->
           </div>
           <!-- /.box -->
         </div>

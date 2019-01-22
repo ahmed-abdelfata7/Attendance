@@ -21,7 +21,7 @@ class CreateProjectsTable extends Migration
             $table->string("hours_number");
             $table->string("project_start");
             $table->string("project_end");
-            $table->string("taken_hours")->default("00:00:00");
+            $table->string("taken_hours")->default("0");
             $table->timestamps();
         });
     }

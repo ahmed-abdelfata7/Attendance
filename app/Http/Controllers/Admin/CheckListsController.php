@@ -62,10 +62,11 @@ class CheckListsController extends Controller
         $checkout = request()->all();
         $check_hours_num = DB::table('check_lists')->where('id',$checkout['check_id'])->first();
          //check if number of hours between check-in and check-out less than 12 hours
-         $check_in     = new Carbon($check_hours_num->check_in);
-         $check_out    = new Carbon(Carbon::now());
-         $difference   = $check_in->diff($check_out)->format('%H');
+        $difference   = $this->number_of_hours($check_hours_num->check_in);
+
         if($difference > 12 ){
+            //updating alert
+            DB::table('check_lists')->where('id',$checkout['check_id'])->update(['alert'=>1]);
             return redirect('admin/systemDashboard')->with('admin_check','admin_check');
         }
         $rules    = [
@@ -111,18 +112,11 @@ class CheckListsController extends Controller
                 //get old hours
                 $old_hours    = $report->hours;
                 //get number of check_out hours 
-                $check_in     = new Carbon($check->check_in);
-                $check_out    = new Carbon(Carbon::now());
-                $difference   = $check_in->diff($check_out)->format('%H:%I:%S');
-
-                $total = date("H:i:s", strtotime($difference) + strtotime($old_hours));
+                $total   = $this->number_of_hours($check->check_in) + $old_hours;
                 //updating report hours
                 DB::table("reports")->where('id',$report->id)->update(['hours'=>$total]);
             }else{
-                $check_in     = new Carbon($check->check_in);
-                $check_out    = new Carbon(Carbon::now());
-                $difference   = $check_in->diff($check_out)->format('%H:%I:%S');
-
+                $difference   = $this->number_of_hours($check->check_in);
                 //insert report in reports
                 $saved['engineer_id'] = session('user_id');
                 $saved['project_id']  = $check->project_id;
@@ -134,11 +128,8 @@ class CheckListsController extends Controller
             //project hours taken updates
             $project = DB::table('projects')->where('id',$check->project_id)->first();
             $project_old_hours    = $project->taken_hours;
-            //get number of check_out hours 
-            $_check_in     = new Carbon($check->check_in);
-            $_check_out    = new Carbon(Carbon::now());
-            $_difference   = $_check_in->diff($_check_out)->format('%H:%I:%S');
-            $taken_hours   = date("H:i:s", strtotime($_difference) + strtotime($project_old_hours));
+            
+            $taken_hours   = $this->number_of_hours($check->check_in) + $project_old_hours;
             //updating report hours
             DB::table("projects")->where('id',$check->project_id)->update(['taken_hours'=>$taken_hours]);
         }
@@ -159,7 +150,11 @@ class CheckListsController extends Controller
     }
     //admin report details
     public function admin_report_details($project_id){
-        $details=DB::table('check_lists')->where('project_id',$project_id)
+        $details=DB::table('check_lists')->where([
+            ['project_id','=',$project_id],
+            ['check_in','<>',null],
+            ['check_out','<>',null],
+            ])
         ->get();
         $project = DB::table("projects")->where('id',$project_id)->first();
         $total   = $project->taken_hours;
@@ -167,16 +162,47 @@ class CheckListsController extends Controller
         return view('admin.check_list.admin_details',compact('details','project','total'));
     }
     public function number_of_hours($checkInDate){
-        $_check_in     = new Carbon("$checkInDate");
-        $_check_out    = new Carbon(Carbon::now());
-        $_years        = $_check_in->diff($_check_out)->format('%Y');
-        $_months       = $_check_in->diff($_check_out)->format('%M');
-        $_days         = $_check_in->diff($_check_out)->format('%D');
-        $_hours        = $_check_in->diff($_check_out)->format('%H');
-        $_mintues      = $_check_in->diff($_check_out)->format('%I');
-        $_seconds      = $_check_in->diff($_check_out)->format('%S');
-        $total         = $_years*365*24 + $_months*30*24 + $_days*24+$_hours+($_mintues/60);
+        $_check_in   = new Carbon("$checkInDate");
+        $_check_out  = new Carbon(Carbon::now());
+        $_years      = $_check_in->diff($_check_out)->format('%Y');
+        $_months     = $_check_in->diff($_check_out)->format('%M');
+        $_days       = $_check_in->diff($_check_out)->format('%D');
+        $_hours      = $_check_in->diff($_check_out)->format('%H');
+        $_mintues    = $_check_in->diff($_check_out)->format('%I');
+        $_seconds    = $_check_in->diff($_check_out)->format('%S');
+        $total       = $_years * 365 * 24 + $_months * 30 * 24 + $_days * 24 + $_hours + ($_mintues / 60);
         return $total;
     }
-    
+    public function admin_check_out($id){
+        $check = DB::table("check_lists")->where('id',$id)->first();
+        if(empty($check)){
+            return redirect()->back();
+        }
+        return view('admin.check_list.admin_checkOut',compact('check'));
+    }
+    public function do_admin_check_out(){
+        $user     = Auth::user();
+        $checkout = request()->all();
+        $check_hours_num = DB::table('check_lists')->where('id',$checkout['check_id'])->first();
+        $difference   = $this->number_of_hours($check_hours_num->check_in);
+
+        $rules    = [
+            'report'                 => 'required',
+            'checkout_date'          => 'required',
+            'checkout_time'          => 'required'
+        ];
+        $validator = Validator::make($checkout,$rules);
+        if ($validator->fails()){
+            return redirect()->back()->withInput($checkout)->withErrors($validator);
+        }else{
+            $save['report']              = $checkout['report'];
+            $checkDate                   = $checkout['checkout_date']." ".$checkout['checkout_time'].":00";
+            $save['check_out']           = $checkDate;
+            $save['alert']               = 0;
+            $save['editBy']              = $user->id;
+            DB::table('check_lists')->where('id',$checkout['check_id'])->update($save);
+            $this->check_engineer_exist($checkout['check_id']);
+            return redirect('admin/my_reports')->with('save','save');
+        }
+    }
 }

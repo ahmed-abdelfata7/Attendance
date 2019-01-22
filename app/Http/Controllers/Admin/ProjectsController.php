@@ -47,7 +47,7 @@ class ProjectsController extends Controller
         $rules    = [
             'name'               => 'required|unique:projects',
             'so_number'          => 'required|unique:projects',
-            'customer_id'        =>'required|exists:customers,id',
+            'customer_id'        => 'required|exists:customers,id',
             'hours_number'       => 'required|numeric',
             'project_start'      => 'required|date|date_format:Y-m-d|before:project_end',
             'project_end'        => 'required|date|date_format:Y-m-d|after:project_start',
@@ -114,7 +114,7 @@ class ProjectsController extends Controller
             $save['customer_id']           = $project['customer_id'];
             $save['hours_number']          = $project['hours_number'];
             $save['project_start']         = $project['project_start'];
-            $save['project_end']           = $project['project_start'];
+            $save['project_end']           = $project['project_end'];
             $save['updated_at']            = Carbon::now();
             
             DB::table('projects')->where('id',$id)->update($save);
