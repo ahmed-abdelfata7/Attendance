@@ -62,11 +62,8 @@
                             <td style="text-align:center;"> 
                                <?php
                                     $reports=DB::table("reports")->where('engineer_id',$row->id)->get();
-                                    $taken_hours='00:00:00';
-                                    foreach($reports as $report){
-                                        $taken_hours   = date("H:i:s", strtotime($taken_hours) + strtotime($report->hours));
-                                    }
-                                    echo $taken_hours;
+                                    
+                                    
                                ?>
                             </td>
                             

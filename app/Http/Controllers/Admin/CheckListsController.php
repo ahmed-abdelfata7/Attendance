@@ -142,10 +142,19 @@ class CheckListsController extends Controller
         ])
         ->get();
         $project = DB::table("projects")->where('id',$project_id)->first()->name;
-        $total   = DB::table("reports")->where([
-           ['project_id','=',$project_id],
-           ['engineer_id','=',$engineer_id]
-        ])->first()->hours;
+        $check= DB::table("reports")->where([
+            ['project_id','=',$project_id],
+            ['engineer_id','=',$engineer_id]
+         ])->first();
+         if(!empty($check)){
+            $total   = DB::table("reports")->where([
+                ['project_id','=',$project_id],
+                ['engineer_id','=',$engineer_id]
+             ])->first()->hours;
+         }else{
+             $total=0;
+         }
+       
         return view('admin.check_list.details',compact('details','project','total'));
     }
     //admin report details
@@ -184,25 +193,53 @@ class CheckListsController extends Controller
         $user     = Auth::user();
         $checkout = request()->all();
         $check_hours_num = DB::table('check_lists')->where('id',$checkout['check_id'])->first();
-        $difference   = $this->number_of_hours($check_hours_num->check_in);
-
+        //check the difference between two dates
+        $date_of_checkout = $checkout['checkout_date']." ".$checkout['checkout_time'].":00";
+        $_check_in   = new Carbon("$check_hours_num->check_in");
+        $_check_out  = new Carbon("$date_of_checkout");
+        $_years      = $_check_in->diff($_check_out)->format('%Y');
+        $_months     = $_check_in->diff($_check_out)->format('%M');
+        $_days       = $_check_in->diff($_check_out)->format('%D');
+        $_hours      = $_check_in->diff($_check_out)->format('%H');
+        $_mintues    = $_check_in->diff($_check_out)->format('%I');
+        $_seconds    = $_check_in->diff($_check_out)->format('%S');
+        $total       = $_years * 365 * 24 + $_months * 30 * 24 + $_days * 24 + $_hours + ($_mintues / 60);
+        //updating dates in database
+        $project = DB::table('projects')->where('id',$check_hours_num->project_id)->first();
+        $project_hours = $project->taken_hours + $total;
+        DB::table('projects')->where('id',$check_hours_num->project_id)->update(['taken_hours'=>$project_hours]);
+        //updating reports for engineer also
+        $report = DB::table('reports')->where([
+            ['engineer_id','=',$check_hours_num->engineer_id],
+            ['project_id','=',$check_hours_num->project_id]
+        ])->first();
+        if(!empty($report)){
+            DB::table("reports")->where('id',$report->id)->update(['hours'=>$report->hours + $total]);
+        }else{
+            $saved['engineer_id'] = $check_hours_num->engineer_id;
+            $saved['project_id']  = $check_hours_num->project_id;
+            $saved['hours']       = $total;
+            $saved['created_at']  = Carbon::now();
+            $saved['updated_at']  = Carbon::now();
+            DB::table("reports")->insert($saved);
+        }
         $rules    = [
             'report'                 => 'required',
             'checkout_date'          => 'required',
             'checkout_time'          => 'required'
-        ];
-        $validator = Validator::make($checkout,$rules);
-        if ($validator->fails()){
-            return redirect()->back()->withInput($checkout)->withErrors($validator);
-        }else{
-            $save['report']              = $checkout['report'];
-            $checkDate                   = $checkout['checkout_date']." ".$checkout['checkout_time'].":00";
-            $save['check_out']           = $checkDate;
-            $save['alert']               = 0;
-            $save['editBy']              = $user->id;
-            DB::table('check_lists')->where('id',$checkout['check_id'])->update($save);
-            $this->check_engineer_exist($checkout['check_id']);
-            return redirect('admin/my_reports')->with('save','save');
+            ];
+            $validator = Validator::make($checkout,$rules);
+            if ($validator->fails()){
+                return redirect()->back()->withInput($checkout)->withErrors($validator);
+            }else{
+                $save['report']              = $checkout['report'];
+                $checkDate                   = $checkout['checkout_date']." ".$checkout['checkout_time'].":00";
+                $save['check_out']           = $checkDate;
+                $save['alert']               = 0;
+                $save['editBy']              = $user->id;
+                DB::table('check_lists')->where('id',$checkout['check_id'])->update($save);
+                $this->check_engineer_exist($checkout['check_id']);
+                return redirect('admin/my_reports')->with('save','save');
         }
     }
 }
