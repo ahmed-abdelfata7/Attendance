@@ -22,5 +22,12 @@ class EngineerReportsController extends Controller
              
         return view('admin.reports.index',compact('engineers'));
     }
+    public function generate_report(){
+        $engineers = DB::table('users')
+                    ->where('users.role', '=', 'engineer')
+                    ->get();
+             
+        return view('admin.reports.create',compact('engineers'));
+    }
     
 }

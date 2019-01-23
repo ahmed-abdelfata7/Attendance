@@ -68,7 +68,12 @@
             'excelHtml5',
             'csvHtml5',
             'pdfHtml5',
-            'print'
+            'print',
+            {
+                extend: 'print',
+                messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.',
+                title:"Welcome to Projects project "
+            }
         ],
         'scrollY'     : true,
         'paging'      : true,
