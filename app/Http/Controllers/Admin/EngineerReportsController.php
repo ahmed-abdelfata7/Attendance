@@ -32,9 +32,10 @@ class EngineerReportsController extends Controller
     }
     public function do_generate_report(Request $request){
         $range = $request->all();
-        $reports = DB::table('check_lists')->whereBetween('check_in', [$range['from'], $range['to']])
-                                           ->orWhereBetween('check_out', [$range['from'], $range['to']])
+        $reports = DB::table('check_lists')->whereDate('check_in','>=', $range['from'])
+                                           ->Wheredate('check_out', '<=',$range['to'])
                                            ->get();
+        
         foreach($reports as $report){
             if($report->engineer_id == $range['engineer_id']){
                 $_check_in   = new Carbon("$report->check_in");
@@ -45,7 +46,7 @@ class EngineerReportsController extends Controller
                 $_hours      = $_check_in->diff($_check_out)->format('%H');
                 $_mintues    = $_check_in->diff($_check_out)->format('%I');
                 $_seconds    = $_check_in->diff($_check_out)->format('%S');
-                $total[]       = $_years * 365 * 24 + $_months * 30 * 24 + $_days * 24 + $_hours + ($_mintues / 60);    
+                $total[]     = $_years * 365 * 24 + $_months * 30 * 24 + $_days * 24 + $_hours + ($_mintues / 60);    
             }
             
         }
