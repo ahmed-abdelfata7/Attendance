@@ -55,44 +55,6 @@
      <script src="{{asset('dashboard/bower_components/raphael/raphael.min.js')}}"></script>
      <script src="{{asset('dashboard/bower_components/morris.js/morris.min.js')}}"></script>
      <!-- Sparkline -->
-<script>
-    $(function () {
-      $('#example1').DataTable({
-        order: [],
-        columnDefs: [ { orderable: false, targets: [0] } ],
-        'searching'   : true,
-        'scrollY'     : true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-            'print',
-            {
-                extend: 'print',
-                messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.',
-                title:"Welcome to Projects project "
-            }
-        ],
-        'scrollY'     : true,
-        'paging'      : true,
-        'lengthChange': true,
-        'info'        : true,
-        'autoWidth'   : true,
-      })
-      $('#example2').DataTable({
-        'scrollY'     : true,
-        'paging'      : true,
-        'lengthChange': true,
-        'searching'   : true,
-        'ordering'    : true,
-        'info'        : true,
-        'autoWidth'   : true,
-       
-      })
-    })
-</script>
     </body>
     </html>
     

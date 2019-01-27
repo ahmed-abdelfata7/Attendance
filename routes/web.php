@@ -36,6 +36,6 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
     Route::get('admin_check_out/{id}','Admin\CheckListsController@admin_check_out');
     Route::post('do_admin_check_out','Admin\CheckListsController@do_admin_check_out');
     Route::get('generate_report','Admin\EngineerReportsController@generate_report');
-
+    Route::post('do_generate_report','Admin\EngineerReportsController@do_generate_report');
 });
 

@@ -59,7 +59,7 @@ th,td{
                 </div>
                @endif   
                <!-- form start -->
-               <form role="form" method="post" action="{{route('admins.store')}}">
+               <form role="form" method="post" action="{{url('admin/do_generate_report')}}">
                 {{csrf_field()}}
                 <div class="box-body">
                         <div class="form-group">
