@@ -121,3 +121,19 @@ th,td{
 @include('admin.CommanFiles.footer')
 </body>
 </html>
+<script>
+    $(function () {
+      $('#example1').DataTable({
+        order: [],
+        columnDefs: [ { orderable: false, targets: [0] } ],
+        'searching'   : true,
+        'scrollY'     : true,
+        'scrollY'     : true,
+        'paging'      : true,
+        'lengthChange': true,
+        'info'        : true,
+        'autoWidth'   : true,
+      })
+      
+    })
+</script>
