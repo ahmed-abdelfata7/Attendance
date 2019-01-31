@@ -9,7 +9,7 @@ use DB;
 use App;
 use App\Project;
 use Carbon\Carbon;
-
+use Illuminate\Http\Response;
 class EngineerReportsController extends Controller
 {
     public function __construct()
@@ -61,4 +61,10 @@ class EngineerReportsController extends Controller
         return view('admin.reports.show',compact('total','reports','engineer_name','from','to'));        
     }
     
+    public function get_alerts(){
+        return response("Data Added Sucessfully")
+            ->header('Content-Type: text/event-stream')
+            ->header('Cache-Control: no-cache')
+            ->flush();  
+    }
 }

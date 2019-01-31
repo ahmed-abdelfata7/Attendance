@@ -39,3 +39,5 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
     Route::post('do_generate_report','Admin\EngineerReportsController@do_generate_report');
 });
 
+    Route::get('admin/get_alerts','Admin\EngineerReportsController@get_alerts');
+    
