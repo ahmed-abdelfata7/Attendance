@@ -81,7 +81,7 @@ class CheckListsController extends Controller
 
             DB::table('check_lists')->where('id',$checkout['check_id'])->update($save);
             $this->check_engineer_exist($checkout['check_id']);
-            return redirect('admin/my_reports')->with('save','save');
+            return redirect('admin/systemDashboard')->with('check_out_ok','save');
         }
     }
     //my reports
@@ -239,7 +239,7 @@ class CheckListsController extends Controller
                 $save['editBy']              = $user->id;
                 DB::table('check_lists')->where('id',$checkout['check_id'])->update($save);
                 $this->check_engineer_exist($checkout['check_id']);
-                return redirect('admin/my_reports')->with('save','save');
+                return redirect('admin/systemDashboard')->with('save','save');
         }
     }
 }

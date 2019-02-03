@@ -17,6 +17,14 @@
       <section class="content">
       <!-- /.content -->
       <div class="row">
+      @if(session('check_out_ok'))
+                        <div class="alert alert-success">
+                            <center>
+                                Check Out Done Successfully 
+                           </center>
+                        </div>
+                    @endif   
+                  
         <section class="col-lg-6 connectedSortable">
            <!-- quick ticket widget -->
            <div class="box box-info" style="box-shadow: 10px 10px 5px grey;">
