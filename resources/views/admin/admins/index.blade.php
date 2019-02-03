@@ -77,7 +77,7 @@ th,td{
                                 <label>Role</label>
                                 <select class="form-control" name="role">
                                   <option value="admin">Admin</option>
-                                  <option value="service">Engineer</option>
+                                  <option value="engineer">Engineer</option>
                                 </select>
                         </div>
                             
