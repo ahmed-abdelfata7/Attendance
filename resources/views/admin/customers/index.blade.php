@@ -118,7 +118,7 @@
                                     <form role="form" action="{{ route('customers.destroy',$row->id) }}" method="post">
                                         {{csrf_field()}}
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                        <button type="submit" class="btn btn-danger"  @if(session('role') !='developer')) disabled @endif><i class="fa fa-trash"></i></button>
                                     </form>
                             </td>
                             @endif

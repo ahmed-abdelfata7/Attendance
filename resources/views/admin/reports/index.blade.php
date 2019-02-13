@@ -28,22 +28,22 @@
                     <thead >
                        <tr>
                          <th>Name</th>
-                         <th>Projects</th>
-                         <th>Total</th>
+                         <th>Project</th>
                        </tr>
                        </thead>
                        <tbody>
                       
                         @foreach($engineers as $row)
-                            <tr>
-                            <td>{{$row->name}}</td>
-                            <td>
-                            <?php
+                        <?php
                               $projects = DB::table('reports')
                                             ->where('engineer_id',$row->id)
                                             ->get();
                                           
-                            ?>
+                        ?>
+                            <tr>
+                            <td>{{$row->name}}</td>
+                            <td>
+                           
                             @if(!empty($projects))
                                 <ul>
                                     @foreach($projects as $rr)
@@ -59,13 +59,7 @@
                               Empty
                             @endif
                             </td>
-                            <td style="text-align:center;"> 
-                               <?php
-                                    $reports=DB::table("reports")->where('engineer_id',$row->id)->get();
-                                    
-                                    
-                               ?>
-                            </td>
+                           
                             
                             </tr>
                          @endforeach

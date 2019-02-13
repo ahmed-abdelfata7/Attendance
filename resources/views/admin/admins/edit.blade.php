@@ -82,7 +82,9 @@ th,td{
                         <div class="form-group">
                                 <label>Role</label>
                                 <select class="form-control" name="role">
+                                @if(session('role')=='developer')
                                   <option value="admin" @if($admin->role=="admin") selected @endif >Admin</option>
+                                @endif
                                   <option value="engineer"@if($admin->role=="engineer") selected @endif>Engineer</option>
                                 </select>
                         </div>

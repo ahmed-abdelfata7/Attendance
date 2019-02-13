@@ -76,7 +76,9 @@ th,td{
                         <div class="form-group">
                                 <label>Role</label>
                                 <select class="form-control" name="role">
+                                  @if(session('role')=='developer')
                                   <option value="admin">Admin</option>
+                                  @endif
                                   <option value="engineer">Engineer</option>
                                 </select>
                         </div>
@@ -119,7 +121,7 @@ th,td{
                       <form role="form" action="{{route('admins.destroy',$row->id)}}" method="post">
                           {{csrf_field()}}
                           <input type="hidden" name="_method" value="DELETE">
-                          <button type="submit" class="btn btn-danger" @if($row->role=='developer') disabled @endif><i class="fa fa-trash"></i></button>
+                          <button type="submit" class="btn btn-danger" @if($row->role !='developer') disabled @endif><i class="fa fa-trash"></i></button>
                       </form>
                   </td>
                     </tr>

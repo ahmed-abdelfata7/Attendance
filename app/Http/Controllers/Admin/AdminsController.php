@@ -16,7 +16,7 @@ class AdminsController extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $user= Auth::user();
-            if($user->role != 'developer'){
+            if($user->role == 'engineer'){
                 return redirect()->back();
             }
             return $next($request);
