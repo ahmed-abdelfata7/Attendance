@@ -33,7 +33,8 @@ class EngineerReportsController extends Controller
     public function do_generate_report(Request $request){
         $range = $request->all();
         $reports = DB::table('check_lists')->whereDate('check_in','>=', $range['from'])
-                                           ->Wheredate('check_out', '<=',$range['to'])
+                                           ->WhereDate('check_out', '<=',$range['to'])
+                                           ->where('engineer_id','=',$range['engineer_id'])
                                            ->get();
         
         foreach($reports as $report){
