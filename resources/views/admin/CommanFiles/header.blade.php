@@ -108,8 +108,8 @@
             @endif
 
             @if($user->role == 'developer' || $user->role == 'admin')
-            <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Report history</span></a></li>
             <li><a href="{{url('admin/generate_report')}}"><i class="fa fa-plus fa-lg"></i> <span>Create Report</span></a></li>
+            <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Report history</span></a></li>
             @endif
           </ul>
         </section>
