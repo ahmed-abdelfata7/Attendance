@@ -55,6 +55,22 @@
      <script src="{{asset('dashboard/bower_components/raphael/raphael.min.js')}}"></script>
      <script src="{{asset('dashboard/bower_components/morris.js/morris.min.js')}}"></script>
      <!-- Sparkline -->
+     <script>
+    $(function () {
+      $('#example1').DataTable({
+        order: [],
+        columnDefs: [ { orderable: false, targets: [0] } ],
+        'searching'   : true,
+        'scrollY'     : true,
+        'scrollY'     : true,
+        'paging'      : true,
+        'lengthChange': true,
+        'info'        : true,
+        'autoWidth'   : true,
+      })
+      
+    })
+</script>
     </body>
     </html>
     

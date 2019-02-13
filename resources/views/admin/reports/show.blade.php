@@ -21,7 +21,7 @@
               <h3 class="box-title"> Reports </h3>
             </div>
             <div class="box-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example2" class="table table-bordered table-striped">
                                   <thead >
                                       <tr>
                                       <th style="text-align:center;">Project</th>
@@ -81,7 +81,7 @@
 
 <script>
     $(function () {
-      $('#example1').DataTable({
+      $('#example2').DataTable({
         order: [],
         columnDefs: [ { orderable: false, targets: [0] } ],
         'searching'   : true,
@@ -108,16 +108,6 @@
         'lengthChange': true,
         'info'        : true,
         'autoWidth'   : true,
-      })
-      $('#example2').DataTable({
-        'scrollY'     : true,
-        'paging'      : true,
-        'lengthChange': true,
-        'searching'   : true,
-        'ordering'    : true,
-        'info'        : true,
-        'autoWidth'   : true,
-       
       })
     })
 </script>
