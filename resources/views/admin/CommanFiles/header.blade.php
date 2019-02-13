@@ -94,7 +94,7 @@
           @if($user->role == 'developer' || $user->role == 'admin')
           <li class="header"><b>System Control</b></li>
           @endif
-            @if($user->role == 'developer')
+            @if($user->role == 'developer'|| $user->role == 'admin')
             <li><a href="{{url('admin/admins')}}"><i class="fa fa-users fa-lg"></i> <span>System users</span></a></li>
             @endif
             @if($user->role == 'developer' || $user->role == 'admin')
@@ -104,11 +104,11 @@
             @endif
             <li class="header">System Data</li>
             @if($user->role=='engineer')
-            <li><a href="{{url('admin/my_reports')}}"><i class="fa fa-list fa-lg"></i> <span>My Reports</span></a></li>
+            <li><a href="{{url('admin/my_reports')}}"><i class="fa fa-list fa-lg"></i> <span>History</span></a></li>
             @endif
 
             @if($user->role == 'developer' || $user->role == 'admin')
-            <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Engineer Reports</span></a></li>
+            <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Report history</span></a></li>
             <li><a href="{{url('admin/generate_report')}}"><i class="fa fa-plus fa-lg"></i> <span>Create Report</span></a></li>
             @endif
           </ul>
