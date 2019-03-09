@@ -134,4 +134,44 @@ class ProjectsController extends Controller
         DB::table('projects')->where('id',$id)->delete();
         return redirect()->back()->with('delete','delete');
     }
+    public function generate_report(){
+        $projects = DB::table('projects')
+                    ->get();
+        return view('admin.projects.createReport',compact('projects'));
+    }
+    public function projects_report(){
+        $projects = DB::table('projects')
+            ->get();
+        return view('admin.projects.showall',compact('projects'));
+    }
+    public function generate_project_report(Request $request){
+        $range = $request->all();
+        $from = $range['from'];
+        $to = $range['to'];
+        $reports = DB::table('check_lists')->whereDate('check_in','>=', $range['from'])
+            ->WhereDate('check_out', '<=',$range['to'])
+            ->where('project_id','=',$range['project_id'])
+            ->get();
+        foreach($reports as $report){
+                if($report->project_id == $range['project_id']){
+                    $_check_in   = new Carbon("$report->check_in");
+                    $_check_out  = new Carbon("$report->check_out");
+                    $_years      = $_check_in->diff($_check_out)->format('%Y');
+                    $_months     = $_check_in->diff($_check_out)->format('%M');
+                    $_days       = $_check_in->diff($_check_out)->format('%D');
+                    $_hours      = $_check_in->diff($_check_out)->format('%H');
+                    $_mintues    = $_check_in->diff($_check_out)->format('%I');
+                    $_seconds    = $_check_in->diff($_check_out)->format('%S');
+                    $total[]     = $_years * 365 * 24 + $_months * 30 * 24 + $_days * 24 + $_hours + ($_mintues / 60);    
+                }
+        }
+        if(empty($total)){
+            $total = 0;
+        }else{
+            $total = array_sum($total);
+        }
+               
+        $project = DB::table('projects')->where('id',$range['project_id'])->first();
+        return view('admin.projects.show',compact('total','project','reports','from','to'));  
+    }
 }

@@ -24,7 +24,7 @@ class HomeController extends Controller
                     ->select('check_lists.id','check_lists.check_in','projects.name','users.name AS userName')
                       ->join('projects','projects.id','=','check_lists.project_id')
                       ->join('users','users.id','check_lists.engineer_id')
-                      ->where('alert','=', 1)
+                      ->where('check_lists.alert','=', 1)
                       ->get();
 
         switch($user->role){
