@@ -22,6 +22,7 @@ class CreateCheckListsTable extends Migration
             $table->text("report")->nullable();
             $table->boolean("alert")->default(0);
             $table->string("editBy")->default(0);
+            $table->boolean("manually")->default(0);
             $table->timestamps();
         });
     }
