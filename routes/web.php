@@ -37,6 +37,14 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth:web'], function(){
     Route::post('do_admin_check_out','Admin\CheckListsController@do_admin_check_out');
     Route::get('generate_report','Admin\EngineerReportsController@generate_report');
     Route::post('do_generate_report','Admin\EngineerReportsController@do_generate_report');
+    Route::get('project_report','Admin\ProjectsController@generate_report');
+    Route::post('generate_project_report','Admin\ProjectsController@generate_project_report');
+    Route::get('projects_report','Admin\ProjectsController@projects_report');
+    Route::get('toggle_check','Admin\ManualCheckController@toggle_check');
+    Route::get('toggleCheck/{id}/{type}','Admin\ManualCheckController@toggleCheck');
+    Route::get('checkIn_manually','Admin\CheckListsController@checkIn_manually');
+    Route::post('do_manually_checkin','Admin\CheckListsController@do_manually_checkin');
+    
 });
 
     Route::get('admin/get_alerts','Admin\EngineerReportsController@get_alerts');

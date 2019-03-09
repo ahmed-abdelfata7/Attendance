@@ -91,25 +91,28 @@
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu" data-widget="tree">
-          @if($user->role == 'developer' || $user->role == 'admin')
-          <li class="header"><b>System Control</b></li>
-          @endif
-            @if($user->role == 'developer'|| $user->role == 'admin')
-            <li><a href="{{url('admin/admins')}}"><i class="fa fa-users fa-lg"></i> <span>System users</span></a></li>
-            @endif
-            @if($user->role == 'developer' || $user->role == 'admin')
-            <li><a href="{{url('admin/customers')}}"><i class="fa fa-list fa-lg"></i> <span>Customers</span></a></li>
-            <li><a href="{{url('admin/projects')}}"><i class="fa fa-building fa-lg"></i> <span>Projects</span></a></li>
-            <li><a href="{{url('admin/emails')}}"><i class="fa fa-warning fa-lg"></i> <span>Alert List</span></a></li>
-            @endif
-            <li class="header">System Data</li>
+         
+            
             @if($user->role=='engineer')
-            <li><a href="{{url('admin/my_reports')}}"><i class="fa fa-list fa-lg"></i> <span>History</span></a></li>
+               <li class="header"><b>Log Data</b></li>
+               <li><a href="{{url('admin/my_reports')}}"><i class="fa fa-list fa-lg"></i> <span>History</span></a></li>
+               <li class="header"><b>Control</b></li>
+                @if($user->check_in==1)
+                <li><a href="{{url('admin/checkIn_manually')}}"><i class="fa fa-clock-o fa-lg"></i> <span>Manually Check In</span></a></li>
+                @endif
             @endif
-
             @if($user->role == 'developer' || $user->role == 'admin')
-            <li><a href="{{url('admin/generate_report')}}"><i class="fa fa-plus fa-lg"></i> <span>Create Report</span></a></li>
-            <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Report history</span></a></li>
+              <li class="header"><b>System Control</b></li>
+              <li><a href="{{url('admin/admins')}}"><i class="fa fa-users fa-lg"></i> <span>System users</span></a></li>
+              <li><a href="{{url('admin/customers')}}"><i class="fa fa-list fa-lg"></i> <span>Customers</span></a></li>
+              <li><a href="{{url('admin/projects')}}"><i class="fa fa-building fa-lg"></i> <span>Projects</span></a></li>
+              <li><a href="{{url('admin/toggle_check')}}"><i class="fa fa-clock-o fa-lg"></i> <span>Manual Check in/out</span></a></li>
+              <li><a href="{{url('admin/emails')}}"><i class="fa fa-warning fa-lg"></i> <span>Alert List</span></a></li>
+              <li class="header">System Data</li>
+              <li><a href="{{url('admin/generate_report')}}"><i class="fa fa-plus fa-lg"></i> <span>Create Engineer Report</span></a></li>
+              <li><a href="{{url('admin/engineer_reports')}}"><i class="fa fa-file fa-lg"></i> <span>Engineer Report history</span></a></li>
+              <li><a href="{{url('admin/project_report')}}"><i class="fa fa-plus fa-lg"></i> <span>Create Project Report</span></a></li>
+              <li><a href="{{url('admin/projects_report')}}"><i class="fa fa-file fa-lg"></i> <span>Project Report history</span></a></li>
             @endif
           </ul>
         </section>

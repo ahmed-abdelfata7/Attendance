@@ -5,7 +5,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            {{$engineer_name}}
+          {{$project->name}}
             <small>Report</small>
           </h1>
           <ol class="breadcrumb">
@@ -24,17 +24,17 @@
             <table id="example2" class="table table-bordered table-striped">
                                   <thead >
                                       <tr>
-                                      <th style="text-align:center;">Project</th>
+                                      <th style="text-align:center;">Engineer</th>
                                       <th style="text-align:center;">CheckIn</th>
                                       <th style="text-align:center;">CheckOut</th>
-                                      <th style="text-align:center;">Your Report</th>
+                                      <th style="text-align:center;">Engineer Report</th>
                                       <th style="text-align:center;">Details</th>
                                       </tr>
                                     </thead>
                                       <tbody>
                                           @foreach($reports as $row)
                                               <tr>
-                                              <td style="text-align:center;">{{DB::table('projects')->where('id',$row->project_id)->first()->name}}</td>
+                                              <td style="text-align:center;">{{DB::table('users')->where('id',$row->engineer_id)->first()->name}}</td>
                                               <td style="text-align:center;">
                                               {{$row->check_in}}
                                               </td>
@@ -47,21 +47,16 @@
                                             
                                               <td style="text-align:center;"> 
                                               @if($row->editBy !=0 )
-                                                <b>Check out Edited By: {{DB::table('users')->where('id',$row->editBy)->first()->name}}</b>
-                                                <br>
-                                              @endif
-                                              
-                                              @if($row->manually !=0 )
-                                                <b>Manually checked by : {{DB::table('users')->where('id',$row->engineer_id)->first()->name}}</b>
+                                                Check out Edited By: {{DB::table('users')->where('id',$row->editBy)->first()->name}}
                                               @endif
                                               </td>
                                             
                                           @endforeach
                                                 <tr>
-                                                    <td style="text-align:center;background-color:#222d31;"><b style="color:white;">Total:</b></td>
+                                                    <td style="text-align:center;background-color:#222d31;"><b style="color:white;">Taken:</b></td>
                                                     <td style="text-align:center;background-color:#222d31;"><b style="color:white;">{{$total}}</b></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td style="text-align:center;background-color:#222d31;"><b style="color:white;">From</b></td>
+                                                    <td style="text-align:center;background-color:#222d31;"><b style="color:white;">{{$project->hours_number}}</b></td>
                                                     <td></td>
                                                     
                                                 </tr>
@@ -100,12 +95,13 @@
             {
                 extend: 'pdfHtml5',
                 messageTop:"This Report From {{$from}} To {{$to}}",
-                title:"{{$engineer_name}}"
+                title:"Project: {{$project->name}}"
+
             },
             {
                 extend: 'print',
                 messageTop:"This Report From {{$from}} To {{$to}}",
-                title:"EngineerName: {{$engineer_name}}"
+                title:"Project:  {{$project->name}}"
             }
         ],
         'scrollY'     : true,

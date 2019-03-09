@@ -58,40 +58,7 @@ th,td{
                     </center>
                 </div>
                @endif   
-               <!-- form start -->
-               <form role="form" method="post" action="{{route('admins.store')}}">
-                {{csrf_field()}}
-                <div class="box-body">
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Name</label>
-                          <input type="text" class="form-control"  placeholder="Enter Name" name="name" required value="{{old('name')}}">
-                        </div>
-             
-                     
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Email</label>
-                          <input type="email" class="form-control"  placeholder="Enter Email" name="email" required value="{{old('email')}}">
-                        </div>
-                 
-                        <div class="form-group">
-                                <label>Role</label>
-                                <select class="form-control" name="role">
-                                  @if(session('role')=='developer')
-                                  <option value="admin">Admin</option>
-                                  @endif
-                                  <option value="engineer">Engineer</option>
-                                </select>
-                        </div>
-                            
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Password</label>
-                          <input type="password" class="form-control"  placeholder="Enter password" name="password" required value="{{old('password')}}">
-                        </div>
-                
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-success">Save</button>
-                </div>
-              </form>
+              
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -99,31 +66,31 @@ th,td{
                 <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th>Engineer</th>
+                  <th>On/Off Check in</th>
+                  <th>On/Off Check out</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                  @foreach($admins as $row)
+                  @foreach($engineers as $row)
                     <tr>
                     <td>{{$row->id}}</td>
                     <td>{{$row->name}}</td>
-                    <td>{{$row->email}}</td>
-                    <td>{{$row->role}}</td>
                     <td style="text-align:center;"> 
-                        <a href="{{  route('admins.edit', [$row->id])}}" class="btn btn-success btn-icon" id="delete"><span class="fa fa-pencil"></span></a>
+                    @if($row->check_in==0)
+                        <a href='{{ url("admin/toggleCheck/$row->id/in") }}' class="btn btn-default btn-icon" id="delete"><span class="fa fa-toggle-off"></span></a>
+                    @else
+                        <a href='{{ url("admin/toggleCheck/$row->id/in") }}' class="btn btn-default btn-icon" id="delete"><span class="fa fa-toggle-on"></span></a>
+                    @endif
                     </td>
                     <td style="text-align:center;"> 
-                      <form role="form" action="{{route('admins.destroy',$row->id)}}" method="post">
-                          {{csrf_field()}}
-                          <input type="hidden" name="_method" value="DELETE">
-                          <button type="submit" class="btn btn-danger"  @if(session('role') !='developer')) disabled @endif><i class="fa fa-trash"></i></button>
-                      </form>
-                  </td>
+                    @if($row->check_out==0)
+                        <a href='{{ url("admin/toggleCheck/$row->id/out") }}' class="btn btn-default btn-icon" id="delete"><span class="fa fa-toggle-off"></span></a>
+                    @else
+                        <a href='{{ url("admin/toggleCheck/$row->id/out") }}' class="btn btn-default btn-icon" id="delete"><span class="fa fa-toggle-on"></span></a>
+                    @endif                    
+                    </td>
                     </tr>
                   @endforeach
                 </tbody>

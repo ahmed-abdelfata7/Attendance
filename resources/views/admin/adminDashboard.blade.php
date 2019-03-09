@@ -85,6 +85,7 @@
             <div class="box-body">
               <ul class="products-list product-list-in-box">
               @foreach($alerts as $row)
+              
                 <li class="item">
                   <div class="product-info">
                     <a href='{{url("admin/admin_check_out/$row->id")}}' class="btn btn-primary">Click to check-Out </a>

@@ -37,12 +37,31 @@
                 {{csrf_field()}}
                 <div class="box-body">
                 <input type="hidden" name="check_id" value="{{$check[0]->id}}">
-                      <div class="form-group">
-                 
-                      <label>Report</label>
-                      <textarea class="textarea" placeholder="Enter Your Report" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="report" value="{{old('report')}}"></textarea>
-                       
+                    @if($user->check_out == 1)
+                    <div class="form-group">
+                      <label>check in day</label>
+                      <input type="date" name="checkout_date" class="form-control" required placeholder="Enter checkout date" value="{{old('checkout_date')}}">
                       </div>
+                      <div class="form-group">
+                      <label>check in time</label>
+                      <input type="time" name="checkout_time" class="form-control" required placeholder="Enter checkout time" value="{{old('checkout_time')}}">
+                      </div>
+                   
+                      <div class="form-group">
+                      <label>Report</label>
+                      <textarea class="textarea" placeholder="Enter Your Report" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="report">
+                      @if(empty($check->report))
+                          you Report
+                      @endif
+                      </textarea>   
+                      </div>
+                    @else
+                    <div class="form-group">
+                      <label>Report</label>
+                      <textarea class="textarea" placeholder="Enter Your Report" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="report">
+                      </textarea>   
+                      </div>
+                      @endif
                 </div><!-- /.box-body -->
             
                 <div class="box-footer">
